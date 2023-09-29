@@ -35,13 +35,16 @@ class JsonDb {
 
   public function create(array $data) : void {
     $data['id'] = $this->getId();
+    $data['deposit'] = 0;
     $this->data[] = $data;
   }
 
   public function update(int $id, array $data) : void {
     foreach($this->data as $key => $acc) {
       if ($acc['id'] == $id) {
+        $data['id'] = $id;
         $this->data[$key] = $data;
+        break;
       }
     }
    }
@@ -64,5 +67,23 @@ class JsonDb {
     }
   }
  }
+
+ public function updateAcc($action, $id, $sum) {
+  $account = $this->data->show($id);
+  // if (empty($this->data->sum)) {
+  //   $msg = 'Enter the sum.';
+  //   }
+  if ('add' == $action) {
+    $account['deposit'] += (float)$sum;
+  }
+  if ('charge' == $action) {
+    if ($sum > $account['deposit']) {
+      $msg = 'Your account balance is insufficient';
+    }
+    $account['deposit'] -= (float)$sum;
+    $msg = 'Your money was successfully transfered';
+  }
+    // $this->data->update($id, $account);
+} 
 
 }

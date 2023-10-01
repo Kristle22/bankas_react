@@ -19,8 +19,7 @@ function App() {
 
   const [modalAccount, setModalAccount] = useState(null);
 
-  const [action, setAction] = useState('');
-  const [editAccount, setEditAccount] = useState(null);
+  const [transfer, setTransfer] = useState(null);
 
   useEffect(() => {
     axios.get('http://localhost/bankas_react/server/accounts')
@@ -42,16 +41,16 @@ function App() {
   }, [deleteAccount]);
 
   useEffect(() => {
-    if (null === editAccount) return;
-    axios.put('http://localhost/bankas_react/server/accounts/add/' + editAccount.id, editAccount)
+    if (null === transfer) return;
+    axios.put('http://localhost/bankas_react/server/accounts/add/' + transfer.id, transfer)
       .then(res => setLastUpdate(Date.now()));
-  }, [editAccount]);
+  }, [transfer]);
 
-  useEffect(() => {
-    if (null === editAccount) return;
-    axios.put('http://localhost/bankas_react/server/accounts/charge/' + editAccount.id, editAccount)
-      .then(res => setLastUpdate(Date.now()));
-  }, [editAccount]);
+  // useEffect(() => {
+  //   if (null === transfer) return;
+  //   axios.put('http://localhost/bankas_react/server/accounts/charge/' + transfer.id, transfer)
+  //     .then(res => setLastUpdate(Date.now()));
+  // }, [transfer]);
 
 
   return (
@@ -61,9 +60,7 @@ function App() {
       setDeleteAccount,
       modalAccount,
       setModalAccount,
-      action,
-      setAction,
-      setEditAccount
+      setTransfer
     }}>
       <div className="container">
         <div className="row">

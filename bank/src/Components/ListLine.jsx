@@ -1,4 +1,4 @@
-function ListLine({ account, setDelete, setModal, action, setAction }) {
+function ListLine({ account, setDelete, setModal }) {
 
   const handleDelete = () => {
     setDelete(account);

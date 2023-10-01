@@ -83,7 +83,7 @@ class JsonDb {
     $account['deposit'] -= (float)$sum;
     $msg = 'Your money was successfully transfered';
   }
-    // $this->data->update($id, $account);
+    $this->data->update($id, $account);
 } 
 
 }

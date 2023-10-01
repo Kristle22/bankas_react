@@ -3,13 +3,14 @@ import DataContext from './DataContext';
 
 function Edit() {
 
-  const { modalAccount, setModalAccount, sum, setSum, setEditAccount } = useContext(DataContext);
+  const { modalAccount, setModalAccount, setTransfer } = useContext(DataContext);
 
   const [Nr, setNr] = useState('');
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [PC, setPC] = useState('');
   const [deposit, setDeposit] = useState('');
+  const [sum, setSum] = useState('');
 
   const close = () => {
     setModalAccount(null);
@@ -22,11 +23,12 @@ function Edit() {
     setSurname(modalAccount.surname);
     setPC(modalAccount.PC);
     setDeposit(modalAccount.deposit);
+    setSum('');
 
   }, [modalAccount]);
 
-  const handleEdit = () => {
-    setEditAccount({ id: modalAccount.id, Nr, name, surname, PC, sum });
+  const handleTransfer = () => {
+    setTransfer({ id: modalAccount.id, sum });
     setModalAccount(null);
   }
 
@@ -52,15 +54,15 @@ function Edit() {
                 </div>
                 <div className="form-group">
                   <label>Name</label>
-                  <input type="text" className="form-control" value={name} onChange={e => setName(e.target.value)} />
+                  <input type="text" className="form-control" value={name} readOnly />
                 </div>
                 <div className="form-group">
                   <label>Surname</label>
-                  <input type="text" className="form-control" value={surname} onChange={e => setSurname(e.target.value)} />
+                  <input type="text" className="form-control" value={surname} readOnly />
                 </div>
                 <div className="form-group">
                   <label>Personal Code</label>
-                  <input type="text" className="form-control" value={PC} onChange={e => setPC(e.target.value)} />
+                  <input type="text" className="form-control" value={PC} readOnly />
                 </div>
                 <div className="form-group">
                   <input type="text" className="form-control" value={sum} onChange={e => setSum(e.target.value)} placeholder="EUR" />
@@ -70,7 +72,7 @@ function Edit() {
             </div>
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-outline-success" onClick={handleEdit}>Save changes</button>
+            <button type="button" className="btn btn-outline-success" onClick={handleTransfer}>Transfer</button>
             <button type="button" className="btn btn-outline-secondary" onClick={close}>Close</button>
           </div>
         </div>

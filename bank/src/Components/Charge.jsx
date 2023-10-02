@@ -1,9 +1,9 @@
 import { useContext, useState, useEffect } from "react";
 import DataContext from './DataContext';
 
-function Edit() {
+function Charge() {
 
-  const { modalAccount, setModalAccount, setTransfer } = useContext(DataContext);
+  const { modalCharge, setModalCharge, setChargeFunds } = useContext(DataContext);
 
   const [Nr, setNr] = useState('');
   const [name, setName] = useState('');
@@ -13,26 +13,26 @@ function Edit() {
   const [sum, setSum] = useState('');
 
   const close = () => {
-    setModalAccount(null);
+    setModalCharge(null);
   }
 
   useEffect(() => {
-    if (null === modalAccount) return;
-    setNr(modalAccount.Nr);
-    setName(modalAccount.name);
-    setSurname(modalAccount.surname);
-    setPC(modalAccount.PC);
-    setDeposit(modalAccount.deposit);
+    if (null === modalCharge) return;
+    setNr(modalCharge.Nr);
+    setName(modalCharge.name);
+    setSurname(modalCharge.surname);
+    setPC(modalCharge.PC);
+    setDeposit(modalCharge.deposit);
     setSum('');
 
-  }, [modalAccount]);
+  }, [modalCharge]);
 
   const handleTransfer = () => {
-    setTransfer({ id: modalAccount.id, sum });
-    setModalAccount(null);
+    setChargeFunds({ id: modalCharge.id, sum });
+    setModalCharge(null);
   }
 
-  if (null === modalAccount) {
+  if (null === modalCharge) {
     return null;
   }
 
@@ -41,7 +41,7 @@ function Edit() {
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
-            <h2 className="modal-title">Edit</h2>
+            <h2 className="modal-title">Charge funds</h2>
             <button type="button" className="close" onClick={close}>
               <span aria-hidden="true">&times;</span>
             </button>
@@ -66,7 +66,7 @@ function Edit() {
                 </div>
                 <div className="form-group">
                   <input type="text" className="form-control" value={sum} onChange={e => setSum(e.target.value)} placeholder="EUR" />
-                  <small className="form-text text-muted">Account Balance: {deposit} Eur.</small>
+                  <small className="form-text text-muted">Charge Balance: {deposit} Eur.</small>
                 </div>
               </div>
             </div>
@@ -81,4 +81,4 @@ function Edit() {
   );
 }
 
-export default Edit;
+export default Charge;

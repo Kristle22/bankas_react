@@ -1,6 +1,10 @@
 <?php
 
-class JsonDb {
+namespace App\Db;
+
+use App\Db\Database;
+
+class Json implements Database {
 
   private static $obj;
   private $data, $file;
@@ -11,21 +15,21 @@ class JsonDb {
 
   public function __construct($file) {
     $this->file = $file;
-    if (!file_exists(__DIR__.'/data/'.$file.'.json')) {
-      file_put_contents(__DIR__.'/data/'.$file.'.json', json_encode([]));
-      file_put_contents(__DIR__.'/data/'.$file.'_id.json', 0);
+    if (!file_exists(DIR.'/data/'.$file.'.json')) {
+      file_put_contents(DIR.'/data/'.$file.'.json', json_encode([]));
+      file_put_contents(DIR.'/data/'.$file.'_id.json', 0);
     }
-    $this->data = json_decode(file_get_contents(__DIR__.'/data/'.$file.'.json'), 1);
+    $this->data = json_decode(file_get_contents(DIR.'/data/'.$file.'.json'), 1);
   }
 
   public function __destruct() {
-    file_put_contents(__DIR__.'/data/'.$this->file.'.json', json_encode($this->data));
+    file_put_contents(DIR.'/data/'.$this->file.'.json', json_encode($this->data));
   }
 
   private function getId() {
-    $id = (int)file_get_contents(__DIR__.'/data/'.$this->file.'_id.json');
+    $id = (int)file_get_contents(DIR.'/data/'.$this->file.'_id.json');
     $id++;
-    file_put_contents(__DIR__.'/data/'.$this->file.'_id.json', $id);
+    file_put_contents(DIR.'/data/'.$this->file.'_id.json', $id);
     return $id;
   }
 
@@ -67,23 +71,5 @@ class JsonDb {
     }
   }
  }
-
- public function updateAcc($action, $id, $sum) {
-  $account = $this->data->show($id);
-  // if (empty($this->data->sum)) {
-  //   $msg = 'Enter the sum.';
-  //   }
-  if ('add' == $action) {
-    $account['deposit'] += (float)$sum;
-  }
-  if ('charge' == $action) {
-    if ($sum > $account['deposit']) {
-      $msg = 'Your account balance is insufficient';
-    }
-    $account['deposit'] -= (float)$sum;
-    $msg = 'Your money was successfully transfered';
-  }
-    $this->data->update($id, $account);
-} 
 
 }

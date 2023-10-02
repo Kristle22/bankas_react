@@ -1,11 +1,15 @@
-function ListLine({ account, setDelete, setModal }) {
+function ListLine({ account, setDelete, setModalAdd, setModalCharge }) {
 
   const handleDelete = () => {
     setDelete(account);
   }
 
-  const handleModal = () => {
-    setModal(account);
+  const handleModalAdd = () => {
+    setModalAdd(account);
+  }
+
+  const handleModalCharge = () => {
+    setModalCharge(account);
   }
 
   return (
@@ -18,8 +22,8 @@ function ListLine({ account, setDelete, setModal }) {
           <span><i>Balance: <b>{account.deposit}</b> Eur.</i></span>
         </div>
         <div className="one-item__buttons">
-          <button type="button" className="btn btn-outline-success mr-3" onClick={handleModal}>Add</button>
-          <button type="button" className="btn btn-outline-success mr-3" onClick={handleModal}>Charge</button>
+          <button type="button" className="btn btn-outline-success mr-3" onClick={handleModalAdd}>Add</button>
+          <button type="button" className="btn btn-outline-success mr-3" onClick={handleModalCharge}>Charge</button>
           <button type="button" className="btn btn-outline-danger" onClick={handleDelete}>Delete</button>
         </div>
       </div>

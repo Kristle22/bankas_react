@@ -6,9 +6,9 @@ use Bankas\Db\Controllers\AdminController;
 class App {
   
   public static function start() {
-
-    define('INSTALL', '/bankas_react/server/public/');
+    
     define('DIR', __DIR__.'/../');
+    define('INSTALL', '/bankas_react/server/public/');
     define('URL', 'http://localhost/bankas_react/server/public/');
 
     header('Access-Control-Allow-Origin: *');

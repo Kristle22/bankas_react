@@ -2,9 +2,11 @@
 
 namespace App\Db;
 
-use App\Db\Database;
+use App\Db\DataBase;
 
-class Json implements Database {
+const DIR = __DIR__.'/../../';
+
+class Json implements DataBase {
 
   private static $obj;
   private $data, $file;
@@ -15,21 +17,22 @@ class Json implements Database {
 
   public function __construct($file) {
     $this->file = $file;
-    if (!file_exists(DIR.'/data/'.$file.'.json')) {
-      file_put_contents(DIR.'/data/'.$file.'.json', json_encode([]));
-      file_put_contents(DIR.'/data/'.$file.'_id.json', 0);
+    if (!file_exists(DIR.'data/'.$file.'.json')) {
+      file_put_contents(DIR.'data/'.$file.'.json', json_encode([]));
+      file_put_contents(DIR.'data/'.$file.'_id.json', 0);
     }
-    $this->data = json_decode(file_get_contents(DIR.'/data/'.$file.'.json'), 1);
+    $this->data = json_decode(file_get_contents(DIR.'data/'.$file.'.json'), 1);
   }
 
   public function __destruct() {
+    // if (null === $this->data) return;
     file_put_contents(DIR.'/data/'.$this->file.'.json', json_encode($this->data));
   }
 
   private function getId() {
-    $id = (int)file_get_contents(DIR.'/data/'.$this->file.'_id.json');
+    $id = (int)file_get_contents(DIR.'data/'.$this->file.'_id.json');
     $id++;
-    file_put_contents(DIR.'/data/'.$this->file.'_id.json', $id);
+    file_put_contents(DIR.'data/'.$this->file.'_id.json', $id);
     return $id;
   }
 

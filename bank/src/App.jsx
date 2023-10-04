@@ -8,6 +8,8 @@ import List from './Components/List';
 import Add from './Components/Add';
 import Charge from './Components/Charge';
 import Home from './Components/Home';
+import Messages from './Components/Messages';
+import rand from './Functions/rand';
 
 function App() {
 
@@ -27,6 +29,23 @@ function App() {
   const [addFunds, setAddFunds] = useState(null);
   const [chargeFunds, setChargeFunds] = useState(null);
 
+  const [messages, setMessages] = useState([]);
+
+  // const showMessage = (mes) => {
+  //   setMessages(mes);
+  //   setTimeout(() => setMessages(null), 5000);
+  // };
+
+  const showMessage = (m) => {
+    // const id = uuidv4();
+    const id = rand(1000, 9999);
+    m.id = id;
+    setMessages((msg) => [...msg, m]);
+    setTimeout(() => {
+      setMessages((msg) => msg.filter((m) => m.id !== id));
+    }, 5000);
+  };
+
   useEffect(() => {
     axios.get('http://localhost/bankas_react/server/public/accounts/home')
       .then(res => {
@@ -44,25 +63,50 @@ function App() {
   useEffect(() => {
     if (null === createAccount) return;
     axios.post('http://localhost/bankas_react/server/public/accounts', createAccount)
-      .then(res => setLastUpdate(Date.now()));
+      .then(res => {
+        setLastUpdate(Date.now());
+        showMessage(res.data.msg);
+        console.log(res.data);
+      })
+      .catch((error) => {
+        showMessage({ text: error.message, type: 'danger' });
+      });
   }, [createAccount]);
 
   useEffect(() => {
     if (null === deleteAccount) return;
     axios.delete('http://localhost/bankas_react/server/public/accounts/' + deleteAccount.id)
-      .then(res => setLastUpdate(Date.now()));
+      .then(res => {
+        setLastUpdate(Date.now());
+        showMessage(res.data.msg);
+      })
+      .catch((error) => {
+        showMessage({ text: error.message, type: 'danger' });
+      });
   }, [deleteAccount]);
 
   useEffect(() => {
     if (null === addFunds) return;
     axios.put('http://localhost/bankas_react/server/public/accounts/add/' + addFunds.id, addFunds)
-      .then(res => setLastUpdate(Date.now()));
+      .then(res => {
+        setLastUpdate(Date.now());
+        showMessage(res.data.msg);
+      })
+      .catch((error) => {
+        showMessage({ text: error.message, type: 'danger' });
+      });
   }, [addFunds]);
 
   useEffect(() => {
     if (null === chargeFunds) return;
     axios.put('http://localhost/bankas_react/server/public/accounts/charge/' + chargeFunds.id, chargeFunds)
-      .then(res => setLastUpdate(Date.now()))
+      .then(res => {
+        setLastUpdate(Date.now());
+        showMessage(res.data.msg);
+      })
+      .catch((error) => {
+        showMessage({ text: error.message, type: 'danger' });
+      });
   }, [chargeFunds]);
 
 
@@ -77,7 +121,8 @@ function App() {
       modalCharge,
       setModalCharge,
       setAddFunds,
-      setChargeFunds
+      setChargeFunds,
+      messages
     }}>
       <div className="container">
         <div className="row">
@@ -88,6 +133,7 @@ function App() {
       </div>
       <Add />
       <Charge />
+      <Messages />
     </DataContext.Provider>
   );
 }

@@ -32,3 +32,27 @@
   display: block;
   background-color: rgba(0, 0, 0, 0.5);
 }
+
+.show-message {
+  display: flex;
+  position: absolute;
+  bottom: 50px;
+  right: 30px;
+  width: 100%;
+  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-end;
+  z-index: 9;
+  .alert-danger {
+    background-color: #f8d7dac2;
+  }
+  .alert-info {
+    background-color: #d1ecf1c2;
+  }
+  .alert-success {
+    background-color: #d4eddac2;
+  }
+  div {
+    width: 50%;
+  }
+}

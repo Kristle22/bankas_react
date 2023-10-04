@@ -32,9 +32,9 @@ class AdminController {
 
   public function listJson() {
     $data = $this->getData($this->file)->showAll();
-    // usort($data, function($a, $b) {
-    //   return $a['name'] <=> $b['surname'];
-    // });
+    usort($data, function($a, $b) {
+      return $a['name'] <=> $b['surname'];
+    });
     return App::json($data);
   }
 
@@ -58,16 +58,16 @@ class AdminController {
     $data = json_decode($rawData, 1);
 
     if (strlen($data['name']) < 3 || strlen($data['surname'] < 3)) {
-      $msg = 'The name and surname must contain at least 3 symbols';
+      $msg = ['type' => 'info', 'text' => 'The name and surname must contain at least 3 symbols'];
+      return App::json(['msg' => $msg]);
     }
-    if (strlen($data['PC']) < 11 || strlen($data['PC'] > 11)) {
-      $msg = 'The text must contain 11 symbols';
-    } else {
-      $msg = 'Correct, your account was created!';
-    }
+    if (strlen($data['PC']) !== 11) {
+      $msg = ['type' => 'info', 'text' => 'The text must contain 11 symbols'];
+      return App::json(['msg' => $msg]);
+    } 
 
     $this->getData($this->file)->create($data);
-    $msg = 'New account was created successfully!';
+    $msg = ['type' => 'success', 'text' => 'New account was created successfully!'];
 
     return App::json(['msg' => $msg]);
   }
@@ -80,21 +80,22 @@ class AdminController {
 
     $account = $this->getData($this->file)->show($id);
     if (empty($sum)) {
-      $msg = 'Enter the sum.';
+      $msg = ['type' => 'info', 'text' => 'Enter the sum.'];
+      return App::json(['msg' => $msg]);
       }
     if ('add' == $action) {
       $account['deposit'] += (float)$sum;
-      $msg = 'Your money was successfully transfered';
+      $msg = ['type' => 'success', 'text' => 'Your money was successfully transfered'];
     }
     if ('charge' == $action) {
       if ($sum > $account['deposit']) {
-        $msg = 'Your account balance is insufficient';
+        $msg = ['type' => 'info', 'text' => 'Your account balance is insufficient'];
+        return App::json(['msg' => $msg]);
       }
       $account['deposit'] -= (float)$sum;
-      $msg = 'Your money was successfully transfered';
+      $msg = ['type' => 'success', 'text' => 'Your money was successfully transfered'];
     }
     $this->getData($this->file)->update($id, $account);
-    $msg = 'This account was updated successfully!';
 
     return App::json(['msg' => $msg]);
   } 
@@ -102,10 +103,11 @@ class AdminController {
   public function deleteAcc($id) {
     $account = $this->getData($this->file)->show($id);
     if ($account['deposit'] > 0) {
-      $msg = 'Your account cannot be deleted, because you have funds in it.';
+      $msg = ['type' => 'info', 'text' => 'Your account cannot be deleted, because you have funds in it.'];
+      return App::json(['msg' => $msg]);
     }
     $this->getData($this->file)->delete($id);
-    $msg = 'An account was deleted successfully!';
+    $msg = ['type' => 'success', 'text' => 'An account was deleted successfully!'];
 
     return App::json(['msg' => $msg]);
   }
